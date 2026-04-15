@@ -1,1 +1,2 @@
-# ai-portfolio-backend1
+Build Command: pip install -r requirements.txt
+Start Command: bash start.sh

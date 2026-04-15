@@ -4,7 +4,6 @@ from pypdf import PdfReader
 
 app = FastAPI()
 
-# Allow frontend to talk to backend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,7 +12,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load your CV
 def load_cv():
     try:
         reader = PdfReader("cv.pdf")
@@ -22,15 +20,17 @@ def load_cv():
             text += page.extract_text()
         return text
     except:
-        return "CV not available right now."
+        return "CV not available"
 
-cv_text = load_cv()
+try:
+    cv_text = load_cv()
+except:
+    cv_text = "CV not available"
 
 @app.get("/")
 def home():
     return {"message": "Backend is working"}
 
-# Chatbot endpoint
 @app.get("/chat")
 def chat(q: str):
     q = q.lower()
@@ -41,12 +41,8 @@ def chat(q: str):
     if "project" in q:
         return {"answer": "I have worked on AI for breast cancer and cervical cancer."}
 
-    if "hire" in q:
-        return {"answer": "You can contact me via WhatsApp, Email, or Call."}
+    return {"answer": "Ask me about my skills, projects or hiring."}
 
-    return {"answer": "I am an AI developer and research assistant. Ask me anything!"}
-
-# CV endpoint
 @app.get("/cv")
 def get_cv():
     return {"cv": cv_text}

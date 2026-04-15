@@ -15,11 +15,14 @@ app.add_middleware(
 
 # Load your CV
 def load_cv():
-    reader = PdfReader("cv.pdf")
-    text = ""
-    for page in reader.pages:
-        text += page.extract_text()
-    return text
+    try:
+        reader = PdfReader("cv.pdf")
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text()
+        return text
+    except:
+        return "CV not available right now."
 
 cv_text = load_cv()
 
